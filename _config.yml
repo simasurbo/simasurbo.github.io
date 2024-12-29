@@ -1,0 +1,6 @@
+title: Simas
+logo: assets/images/profile_pic.png
+show_downloads: True
+remote_theme: pages-theems/minimal@v0.2.0
+plugins:
+- jekyll-remote-theme
