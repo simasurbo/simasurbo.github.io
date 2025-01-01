@@ -1,7 +1,8 @@
 # Data portfolio
-
+------------------------------------
 # Top YouTubers for Marketing teams to partner with in 2024 
 
+------------------------------------
 
 # Table of contents
 - [Objective](#objective)
@@ -24,9 +25,9 @@
   -   [Results](#results)
   -   [DAX Measures](#dax-measures)
 - [Analysis](#analysis)
-  -   [Findings](#findings)
   -   [Validation](#validation)
   -   [Discovery](#discovery)
+   -  [SQL Query](#sql-query) 
 - [Recommendations](#recommendations)
   -   [Potential ROI](#potential-roi)
   -   [Potential Courses of Action](#potential-courses-of-action)
@@ -337,13 +338,179 @@ VAR viewsPerSubscriber = DIVIDE(sumOfTotalViews, sumOfTotalSubscribers, BLANK())
 RETURN viewsPerSubscriber
 ```
 
+# Analysis
+
+We need to answer these key questions for the Head of Marketing:
+
+1. Who are the top 10 YouTubers with the most subscribers?
+2. Which 3 channels have uploaded the most videos?
+3. Which 3 channels have the most views?
+4. Which 3 channels have the highest average views per video?
+5. Which 3 channels have the highest views per subscriber ratio?
+6. Which 3 channels have the highest subscriber engagement rate per video uploaded?
+
+
+## 1. Who are the top 10 YouTubers by subscriber count?
+| Rank | Username | Subscribers (M) |
+| ------ | --------- | ------------- |
+| 1 | MrBeast | 336 |
+| 2 | T-Series | 281 |
+| 3 | Cocomelon-Nursery Rhymes | 186 |
+| 4 | YouTube Movies | 185 |
+| 5 | Set India | 180 |
+| 6 | Vlad & Niki | 129 |
+| 7 | Kids Diana Show | 128 |
+| 8 | Like Nastya | 124 |
+| 9 | Music | 121 |
+| 10 | Zee Music Company | 112 |
+
+## 2. Which 3 channels have uploaded the most videos?
+| Rank | Username | Video count |
+| ------ | --------- | ------------- |
+| 1 | ABP NEWS | 433181 |
+| 2 | Aaj Tak | 415087 |
+| 3 | ABS-CBN Entertainment | 234889 |
+
+## 3. Which 3 channels have the most views?
+| Rank | Username | Views (B) |
+| ------ | --------- | ------------- |
+| 1 | T-Series | 277.24 |
+| 2 | Cocomelon-Nursery Rhymes | 194.36 |
+| 3 | Set India | 172.71 |
+
+## 4. Which 3 channels have the highest average views per video?
+| Rank | Username | Avg Views Per Video (M) |
+| ------ | --------- | ------------- |
+| 1 | BadBunny | 236.93 |
+| 2 | EminemMusic | 164.57 |
+| 3 | KatyPerry | 162.45 |
+
+
+## 5. Which 3 channels have the highest views per subscriber ratio?
+| Rank | Username | Avg Views Per Video (M) |
+| ------ | --------- | ------------- |
+| 1 | Sony SAB | 1256.87 |
+| 2 | Toys & Colors | 1211.64 |
+| 3 | Zee TV | 1134.50 |
+
+## 6. Which 3 channels have the highest subscriber engagement rate per video uploaded?
+| Rank | Username | Avg Views Per Video (M) |
+| ------ | --------- | ------------- |
+| 1 | UR.Cristiano | 900,000.00 |
+| 2 | MrBeast | 400,954.65 |
+| 3 | MrBeast2 | 382,113.82 |
+
+### Notes
+In this case, we are going to focus on the metrics that are most important in generating ROI. We fill focus on channels with the highest:
+
+- subscribers
+- total views
+- videos uploaded
+
+
+# Validation
+Calculation breakdown
+Campaign idea = product placement
+
+1. MrBeast
+
+Average views per video = 79.8 million
+Product cost = $5
+Potential units sold per video = 79.8 million x 2% conversion rate = 1,595,600 units sold
+Potential revenue per video = 1,595,600 x $5 = $7,978,000
+Campaign cost (one-time fee) = $50,000
+Net profit = $7,978,000 - $50,000 = $$7,878,000
+
+2. T-Series
+
+Average views per video = 12.4 million
+Product cost = $5
+Potential units sold per video = 12.4 million x 2% conversion rate = 248,600 units sold
+Potential revenue per video = 248,600 x $5 = $1,243,000
+Campaign cost (one-time fee) = $50,000
+Net profit = $1,243,000 - $50,000 = $1,143,000
+
+3. Cocomelon-Nursery Rhymes
+
+Average views per video = 141.9 million
+Product cost = $5
+Potential units sold per video = 141.9 million x 2% conversion rate = 2,837,400 units sold
+Potential revenue per video = 2,837,400 x $5 = $14,187,000
+Campaign cost (one-time fee) = $50,000
+Net profit = $14,187,000 - $50,000 = $14,087,000
+
+Best option from category: Cocomelon-Nursery Rhymes
+
+# SQL Query
+
+```sql
+/*
+1. Define the variable
+2. Create a CTE (common table expression) that rounds the avg views per video
+3. Select the columns that are requiredfor the analysis
+4. Filter the results by the YouTube channels with the highest subsciber bases
+5. Order by net_profit (DESC)
+*/
+
+
+-- 1.
+SET @coversionRate = 0.02;		 -- the conversion rate at 2%
+SET @productCost = 5.0;  		 -- the product cost at $5
+SET @campaignCost = 100000.0;	 -- the campaign cost at $50,000
+
+
+-- 2. 
+WITH ChannelData AS (
+	SELECT
+    Username,
+    Views,
+    Uploads,
+    ROUND((Views / Uploads), -4) AS rounded_avg_views_per_video
+FROM 
+	view_youtube_top100
+
+)
+
+
+-- 3, 4, 5
+
+SELECT
+	Username,
+    rounded_avg_views_per_video,
+    ROUND((rounded_avg_views_per_video * @coversionRate), 2) AS potential_units_sold_per_video,
+    ROUND((rounded_avg_views_per_video * @coversionRate * @productCost), 2) AS potential_revenue_per_video,
+    ROUND(((rounded_avg_views_per_video * @coversionRate * @productCost) - @campaignCost), 2) AS net_profit
+FROM 
+	ChannelData
+WHERE 
+	Username IN ('MrBeast', 'T-Series', 'Cocomelon-Nursery Rhymes')
+ORDER BY
+	net_profit DESC;
+```
+
+# Discovery
+We discovered the following:
+
+1. MrBeast, T-Series, Cocomelon-Nursery Rhymes are the channnels with the most subscribers
+2. ABP NEWS, Aaj Tak, ABS-CBN Entertainment are the channels with the most videos uploaded
+3. T-Series, Cocomelon-Nursery Rhymes, Set India are the channels with the most views
+4. Entertainment channels are useful for broader reach, as the channels posting consistently on their platforms and generating the most engagement are focus on entertainment and music
+
+# Potential ROI
+What ROI do we expect if we take this course of action?
+Setting up a collaboration deal with Cocomelon-Nursery Rhymes would make the client a net profit of $14,087,000 per video
 
 
 
+# Action plan
+What course of action should we take and why?
+Based on our analysis, I recommend Cocomelon-Nursery Rhymes as the best channel to advance a long-term partnership deal with to promote the client's products.
 
-
-
-
+What steps are recommended for an effective decision?
+1. Reach out to Cocomelon-Nursery Rhymes for a partnership
+2. Negotiate contracts within the budgets allocated to each marketing campaign
+3. Kick off the campaign and track the KPI
+4. Review the campaign stats, gather insights and optimize based on feedback from the marketing team
 
 
 
