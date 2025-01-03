@@ -40,7 +40,7 @@ To discover the top 100 Youtubers in the world to help the marketing team run su
 ## Problems
 - The marketing team has struggled to find the top YouTube channels via a simple search
 - There are conflicting data reports and it’s complicated to stay up to date
-- Third-party providers are too expensive
+- Third-party providers are out of budget
 - The company’s own BI team doesn’t have the resources to do this request
 
 ## Target
@@ -49,7 +49,7 @@ To discover the top 100 Youtubers in the world to help the marketing team run su
 
 
 # Data Source
-Data needed to process to YouTubers in 2024, including:
+Data needed to process YouTubers in 2024, including:
 
 - channel names
 - total subscribers
