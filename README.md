@@ -67,12 +67,12 @@ The data is sourced from Kaggle (an Excel extract) here: https://www.kaggle.com/
 
 ## Dashboard
 
-Who are the top 10 YouTubers with the most subscribers?
-Which 3 channels have uploaded the most videos?
-Which 3 channels have the most views?
-Which 3 channels have the highest average views per video?
-Which 3 channels have the highest views per subscriber ratio?
-Which 3 channels have the highest subscriber engagement rate per video uploaded?
+- Who are the top 10 YouTubers with the most subscribers?
+- Which 3 channels have uploaded the most videos?
+- Which 3 channels have the most views?
+- Which 3 channels have the highest average views per video?
+- Which 3 channels have the highest views per subscriber ratio?
+- Which 3 channels have the highest subscriber engagement rate per video uploaded?
 For now, these are some of the questions we need to answer, this may change as we progress down our analysis.
 
 ## Tools
