@@ -65,9 +65,7 @@ The data is sourced from Kaggle (an Excel extract) here: https://www.kaggle.com/
 - Analysis
 
 
-## Dashboard 
-What should the dashboard contain based on the requirements provided?
-To understand what it should contain, we need to figure out what questions we need the dashboard to answer:
+## Dashboard
 
 Who are the top 10 YouTubers with the most subscribers?
 Which 3 channels have uploaded the most videos?
